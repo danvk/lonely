@@ -27,8 +27,8 @@ Lonely Hangouts requires node.js.
 
 Once you have node, run:
 
-npm install express socket.io commander
-git clone ...
+  npm install express socket.io commander
+  git clone https://github.com/danvk/lonely.git
 
 
 --- Usage ---
@@ -39,6 +39,10 @@ $ node lonely.js your_app.xml
 
 Then connect to http://localhost:8080 in your browser. You can open the URL in
 an incognito window or another browser to create a second user.
+
+For example, you can try running:
+
+$ node lonely.js demos/basic.xml
 
 If you change your XML file or any of the resources that it includes, you'll
 need to refresh the page in your browser. This will not erase the existing app
