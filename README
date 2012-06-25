@@ -90,3 +90,11 @@ Paths are relative to the directory from which you started the server.
 
 
 --- Remaining work ---
+
+There are _many_ methods of the G+ Hangouts API which are not currently
+implemented in Lonely Hangouts. For a complete API reference, see:
+https://developers.google.com/+/hangouts/api/
+
+Other useful features would include:
+o A "reset state" button
+o A facility for saving/restoring state
