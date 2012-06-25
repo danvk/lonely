@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+
+  This is a fairly minimal client of gapi.hangout, useful for testing the API
+  and making sure that Lonely Hangouts is working on your machine.
+
+  To try it out, run:
+
+  $ node lonely.js demo/mini.xml
+
+  and point your browser (or browsers) to http://localhost:8080
+
+  Real Hangout Application's XML files tend to pull in external resources.
+  To see how this works with Lonely Hangouts, check out basic.xml.
+
+-->
+
+<Module>
+  <ModulePrefs
+    title="minihangout"
+    title_url="http://www.danvk.org/wp/2012-05-17/puzzle-crosswords-for-google/"
+    author="Dan Vanderkam"
+    author_email="danvdk@gmail.com"
+    description="Miniature Hangout API demo."
+    >
+   <Require feature="rpc"/>
+  </ModulePrefs>
+
+  <Content type="html">
+  <![CDATA[
+<HTML>
+<HEAD>
+
+<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<TITLE>G+ API server test</TITLE>
+</HEAD>
+
+<body>
+
+<p>You are: <b id=you>&hellip;</b></p>
+
+<ul id=participants>
+</ul>
+
+<ul id=state>
+</ul>
+
+<b>Key:</b> <input type=text id=key width=10 />
+<b>Value:</b> <input type=text id=value width=30 />
+<input id=submit type=button value="Submit Delta" />
+
+<script type="text/javascript">
+  gadgets.util.registerOnLoadHandler(function() {
+    gapi.hangout.onApiReady.add(
+      function(eventObj) {
+        if (eventObj.isApiReady) {
+          realInit();
+        }
+      }
+    );
+  });
+
+  function realInit() {
+    gapi.hangout.data.onStateChanged.add(stateUpdated);
+    gapi.hangout.onEnabledParticipantsChanged.add(usersChanged);
+
+    document.getElementById("submit").onclick = function() {
+      var k = document.getElementById("key").value;
+      var v = document.getElementById("value").value;
+      d = {};
+      d[k] = v;
+      gapi.hangout.data.submitDelta(d);
+    };
+
+    stateUpdated();  // initialize state
+    usersChanged();
+  }
+
+  function stateUpdated() {
+    var keys = gapi.hangout.data.getKeys();
+    keys.sort();
+    var state = gapi.hangout.data.getState();
+
+    var html = '';
+    for (var i = 0; i < keys.length; i++) {
+      html += '<li>' + keys[i] + ': ' + state[keys[i]] + '</li>\n';
+    }
+    document.getElementById('state').innerHTML = html;
+  }
+
+  function usersChanged() {
+    var users = gapi.hangout.getParticipants();
+    var html = '';
+    for (var i = 0; i < users.length; i++) {
+      var u = users[i];
+      var p = u.person;
+      var line = '';
+      line += '<img src="' + p.image.url + '" />';
+      line += ' ' + u.id + ': ' + p.displayName;
+      if (!users[i].hasAppEnabled) line = '<strike>' + line + '</strike>';
+
+      html += '<li>' + line + '</li>\n';
+    }
+
+    document.getElementById('participants').innerHTML = html;
+
+    var me = gapi.hangout.getParticipantById(gapi.hangout.getParticipantId());
+    document.getElementById('you').innerHTML = me.person.displayName;
+  }
+</script>
+
+</body>
+</html>
+  ]]>
+  </Content>
+</Module>
