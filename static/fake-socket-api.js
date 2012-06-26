@@ -23,7 +23,8 @@ var EVENTS = {
   WELCOME: 'welcome',
   PARTICIPANTS_CHANGED: 'participantsChanged',
   STATE_CHANGED: 'stateChanged',
-  SUBMIT_DELTA: 'submitDelta'
+  SUBMIT_DELTA: 'submitDelta',
+  RESET_STATE: 'resetState'
 };
 
 
@@ -186,3 +187,8 @@ socket.on(EVENTS.PARTICIPANTS_CHANGED, function(data) {
 socket.on(EVENTS.STATE_CHANGED, function(data) {
   gapi._changeState(data.state);
 });
+
+function lonelyResetState() {
+  // This will trigger a state update.
+  socket.emit(EVENTS.RESET_STATE);
+}

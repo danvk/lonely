@@ -139,7 +139,18 @@ var gapi = (function() {
         add: function(fn) {
           // ...
         }
+      },
+
+      _resetState: function() {
+        state = {};
+        for (var i = 0; i < stateChangeFns.length; i++) {
+          stateChangeFns[i]();
+        }
       }
     }
   }
 })();
+
+function lonelyResetState() {
+  gapi.hangout._resetState();
+}

@@ -21,7 +21,8 @@ var EVENTS = {
   WELCOME: 'welcome',
   PARTICIPANTS_CHANGED: 'participantsChanged',
   STATE_CHANGED: 'stateChanged',
-  SUBMIT_DELTA: 'submitDelta'
+  SUBMIT_DELTA: 'submitDelta',
+  RESET_STATE: 'resetState'
 };
 
 var express = require('express'),
@@ -77,9 +78,17 @@ function addStaticJsFile(app, server_path, filename) {
 }
 
 // Server-defined static files.
-addStaticJsFile(app, '/fake-api.js', __dirname + '/static/fake-api.js');
-addStaticJsFile(app, '/fake-socket-api.js', __dirname + '/static/fake-socket-api.js');
-addStaticJsFile(app, '/xsocket.io.min.js', __dirname + '/static/xsocket.io.min.js');
+var statics = [
+  'fake-api.js',
+  'fake-socket-api.js',
+  'xsocket.io.min.js',
+  'lonely-button.js',
+  'lonely-button.css'
+];
+for (var i = 0; i < statics.length; i++) {
+  var f = statics[i];
+  addStaticJsFile(app, '/' + f, __dirname + '/static/' + f);
+}
 
 // User-defined static files.
 app.get(/(.*)/, function(req, res) {
@@ -166,6 +175,12 @@ io.sockets.on('connection', function(socket) {
       }
     }
 
+    socket.broadcast.emit(EVENTS.STATE_CHANGED, { state: global_state });
+    socket.emit(EVENTS.STATE_CHANGED, { state: global_state });
+  });
+
+  socket.on(EVENTS.RESET_STATE, function(data) {
+    global_state = [];
     socket.broadcast.emit(EVENTS.STATE_CHANGED, { state: global_state });
     socket.emit(EVENTS.STATE_CHANGED, { state: global_state });
   });

@@ -1,0 +1,27 @@
+#lonely-button {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  background: lightgray;
+  border: 1px solid black;
+  margin: -1px 0 0 -1px;
+  line-height: 20px;
+  font-size: 20px;
+  text-align: center;
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  cursor: hand;
+}
+
+#lonely-panel {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  background: white;
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
