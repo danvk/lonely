@@ -25,3 +25,11 @@
   padding: 10px;
   text-align: center;
 }
+
+#lonely-reset {
+  color: darkred;
+}
+
+#lonely-states {
+  text-align: left;
+}

@@ -14,7 +14,6 @@
 // - submitDelta: { delta: { k1: v1, k2: v2, ... }, deleteKeys: [ ... ] }
 
 // Still to do:
-// - Add a "reset" feature.
 // - Inline user PNGs
 
 var EVENTS = {
@@ -22,7 +21,9 @@ var EVENTS = {
   PARTICIPANTS_CHANGED: 'participantsChanged',
   STATE_CHANGED: 'stateChanged',
   SUBMIT_DELTA: 'submitDelta',
-  RESET_STATE: 'resetState'
+  RESET_STATE: 'resetState',
+  SAVED_STATES_CHANGED: 'savedStatesChanged',
+  ADD_SAVED_STATE: 'addSavedState'
 };
 
 var express = require('express'),
@@ -43,6 +44,7 @@ assert.equal(1, program.args.length,
     'Usage: node ' + process.argv[1] + ' path/to/hangout.xml');
 
 xml_file = program.args[0];
+states_file = path.basename(xml_file) + '.states.json';
 
 var app = express.createServer();
 var io = io.listen(app);
@@ -122,9 +124,22 @@ var users = [
   // TODO(danvk): add more
 ];
 
-// Returns a { id: id#, displayName: "User Name", ... } object.
-function makeUpUser() {
-  var user = users[num_users % users.length];
+// Returns a { id: id#, displayName: "User Name", ... } object
+// whose ID is not the same as any of existing_users.
+function makeUpUser(existing_users) {
+  var ids = {};
+  for (var i = 0; i < existing_users.length; i++) {
+    ids[existing_users[i].person.id] = true;
+  }
+
+  var user = null;
+  for (var i = 0; i < users.length; i++) {
+    if (ids[users[i].id]) continue;
+    user = users[i];
+    break;
+  }
+  assert.ok(user);
+
   var displayIndex = num_users;
   num_users++;
   return {
@@ -143,15 +158,33 @@ var global_state = { };
 // Current list of enabled users.
 var current_users = [ ];
 
+// Saved States
+var saved_states = {};
+fs.readFile(states_file, function(e, data) {
+  if (e && e.code == 'ENOENT') {
+    // file does not exist yet -- and that's totally fine.
+    return;
+  }
+  assert.ifError(e);
+  saved_states = JSON.parse(data);
+});
+function writeSavedStates() {
+  var data = JSON.stringify(saved_states);
+  fs.writeFile(states_file, data, function(e) {
+    assert.ifError(e);
+  });
+}
+
 io.sockets.on('connection', function(socket) {
-  var user = makeUpUser();
+  var user = makeUpUser(current_users);
   current_users.push(user);
 
   // Tell the user who they are and give them the lay of the land.
   socket.emit(EVENTS.WELCOME, {
     id: user.id,
     state: global_state,
-    users: current_users
+    users: current_users,
+    savedStates: saved_states
   } );
 
   // Let everyone else know that someone has joined.
@@ -179,10 +212,19 @@ io.sockets.on('connection', function(socket) {
     socket.emit(EVENTS.STATE_CHANGED, { state: global_state });
   });
 
+  // Some user wants to reset the state. Do it and let everyone know.
   socket.on(EVENTS.RESET_STATE, function(data) {
-    global_state = [];
+    global_state = data.state || {};
     socket.broadcast.emit(EVENTS.STATE_CHANGED, { state: global_state });
     socket.emit(EVENTS.STATE_CHANGED, { state: global_state });
+  });
+
+  // User added a saved state. Save it and let everyone know.
+  socket.on(EVENTS.ADD_SAVED_STATE, function(data) {
+    saved_states[data.name] = data.state;
+    writeSavedStates();
+    socket.broadcast.emit(EVENTS.SAVED_STATES_CHANGED, { savedStates: saved_states });
+    socket.emit(EVENTS.SAVED_STATES_CHANGED, { savedStates: saved_states });
   });
 });
 

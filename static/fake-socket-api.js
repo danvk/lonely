@@ -24,7 +24,9 @@ var EVENTS = {
   PARTICIPANTS_CHANGED: 'participantsChanged',
   STATE_CHANGED: 'stateChanged',
   SUBMIT_DELTA: 'submitDelta',
-  RESET_STATE: 'resetState'
+  RESET_STATE: 'resetState',
+  SAVED_STATES_CHANGED: 'savedStatesChanged',
+  ADD_SAVED_STATE: 'addSavedState'
 };
 
 
@@ -176,8 +178,11 @@ if (typeof(GAPI_SERVER) == 'undefined') {
 }
 var socket = io.connect(GAPI_SERVER);
 
+var lonelySavedStates = {};
+
 socket.on(EVENTS.WELCOME, function(data) {
   gapi._apiIsReady(data.id, data.users, data.state);
+  lonelySavedStates = data.savedStates;
 });
 
 socket.on(EVENTS.PARTICIPANTS_CHANGED, function(data) {
@@ -188,7 +193,24 @@ socket.on(EVENTS.STATE_CHANGED, function(data) {
   gapi._changeState(data.state);
 });
 
-function lonelyResetState() {
+socket.on(EVENTS.SAVED_STATES_CHANGED, function(data) {
+  lonelySavedStates = data.savedStates;
+  if (typeof(savedStatesUpdateCallback) !== 'undefined') {
+    // hack!
+    savedStatesUpdateCallback(lonelySavedStates);
+  }
+});
+
+function lonelyResetState(state) {
   // This will trigger a state update.
-  socket.emit(EVENTS.RESET_STATE);
+  var d = {};
+  if (state) d.state = state;
+  socket.emit(EVENTS.RESET_STATE, d);
+}
+
+function lonelySaveState(name, state) {
+  socket.emit(EVENTS.ADD_SAVED_STATE, {
+    name: name,
+    state: state
+  });
 }

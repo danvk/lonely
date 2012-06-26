@@ -11,7 +11,7 @@ body {
   margin-left: -300px;
 }
 
-ul {
+#participants, #state {
   border: 1px solid black;
   padding: 20px;
   border-radius: 5px;
