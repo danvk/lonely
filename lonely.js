@@ -25,6 +25,7 @@ var EVENTS = {
 };
 
 var express = require('express'),
+    http    = require('http'),
     io      = require('socket.io'),
     assert  = require('assert'),
     fs      = require('fs'),
@@ -43,8 +44,9 @@ assert.equal(1, program.args.length,
 
 xml_file = program.args[0];
 
-var app = express.createServer();
-var io = io.listen(app);
+var app = express();
+var httpServer = http.createServer(app);
+var io = io.listen(httpServer)
 
 app.configure(function() {
   app.use(express.static(__dirname + '/..'));
@@ -172,5 +174,5 @@ io.sockets.on('connection', function(socket) {
 });
 
 
-app.listen(8080);
+httpServer.listen(8080);
 console.log('Listening on http://localhost:8080/');
