@@ -27,7 +27,7 @@ Lonely Hangouts requires node.js.
 
 Once you have node, run:
 
-  npm install express socket.io commander
+  npm install express socket.io commander xml2js
   git clone https://github.com/danvk/lonely.git
 
 
