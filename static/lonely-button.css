@@ -14,6 +14,7 @@
   -webkit-transform: rotate(90deg);
   -moz-transform: rotate(90deg);
   cursor: hand;
+  z-index: 1000;
 }
 
 #lonely-panel {
@@ -24,6 +25,7 @@
   border: 1px solid black;
   padding: 10px;
   text-align: center;
+  z-index: 1000;
 }
 
 #lonely-reset {

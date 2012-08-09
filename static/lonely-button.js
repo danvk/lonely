@@ -39,15 +39,17 @@ document.addEventListener("DOMContentLoaded", function() {
     e.stopPropagation();
   };
 
-  document.getElementById("lonely-save").onclick = function(e) {
-    e.stopPropagation();
-    var state = gapi.hangout.data.getState();
-    var name = prompt('Enter a name for the new saved state:');
-    if (name) {
-      lonelySaveState(name, state);
-      // update will eventually come back to us.
-    }
-  };
+  if (document.getElementById("lonely-save")) {
+    document.getElementById("lonely-save").onclick = function(e) {
+      e.stopPropagation();
+      var state = gapi.hangout.data.getState();
+      var name = prompt('Enter a name for the new saved state:');
+      if (name) {
+        lonelySaveState(name, state);
+        // update will eventually come back to us.
+      }
+    };
+  }
 
   savedStatesUpdateCallback = function(savedStates) {
     var names = [];
@@ -79,7 +81,9 @@ document.addEventListener("DOMContentLoaded", function() {
   // Initialize the list of saved states once it's available.
   gadgets.util.registerOnLoadHandler(function() {
     gapi.hangout.onApiReady.add(function() {
-      savedStatesUpdateCallback(lonelySavedStates);
+      if (typeof(lonelySavedStates) !== 'undefined') {
+        savedStatesUpdateCallback(lonelySavedStates);
+      }
     });
   });
 });
