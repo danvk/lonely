@@ -1,11 +1,14 @@
 {
   "name": "lonely",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Test Google+ Hangouts apps all by your lonesome",
   "main": "lonely.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "lonely": "lonely.js"
+  }
   "repository": {
     "type": "git",
     "url": "git://github.com/danvk/lonely.git"

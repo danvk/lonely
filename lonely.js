@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Lonely Hangouts - Local testing for the Google+ Hangouts API.
 //
 // Usage:
