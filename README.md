@@ -1,7 +1,7 @@
 ## Lonely Hangouts
 
-Local testing for the Google+ Hangouts API.
-Dan Vanderkam
+*Local testing for the Google+ Hangouts API<br>
+By Dan Vanderkam*
 
 Google+ Hangouts provide an API very reminiscent of the Google Wave Gadgets
 API, which later became the Google Shared Spaces API. This API makes it easy to
