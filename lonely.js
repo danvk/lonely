@@ -51,9 +51,7 @@ var app = express();
 var httpServer = http.createServer(app);
 var io = io.listen(httpServer)
 
-app.configure(function() {
-  app.use(express.static(__dirname + '/..'));
-});
+app.use(express.static(__dirname + '/..'));
 
 // Base XML file.
 app.get('/', function(req, res) {

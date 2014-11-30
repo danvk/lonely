@@ -1,0 +1,28 @@
+{
+  "name": "lonely",
+  "version": "0.1.0",
+  "description": "Test Google+ Hangouts apps all by your lonesome",
+  "main": "lonely.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/danvk/lonely.git"
+  },
+  "keywords": [
+    "hangouts"
+  ],
+  "author": "Dan Vanderkam",
+  "license": "Apache2",
+  "bugs": {
+    "url": "https://github.com/danvk/lonely/issues"
+  },
+  "homepage": "https://github.com/danvk/lonely",
+  "dependencies": {
+    "commander": "^2.1.0",
+    "express": "^3.4.8",
+    "socket.io": "^0.9.9",
+    "xml2js": "^0.1.14"
+  }
+}
