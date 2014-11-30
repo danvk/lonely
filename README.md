@@ -1,8 +1,8 @@
-Lonely Hangouts - Local testing for the Google+ Hangouts API.
-Copyright (c) 2012-, Dan Vanderkam
+Lonely Hangouts
+---------------
 
-https://github.com/danvk/lonely
-
+Local testing for the Google+ Hangouts API.
+Dan Vanderkam
 
 Google+ Hangouts provide an API very reminiscent of the Google Wave Gadgets
 API, which later became the Google Shared Spaces API. This API makes it easy to
@@ -21,37 +21,37 @@ portion of the Google+ Hangouts API. It does not require accounts and loads all
 resources from local disk.
 
 
---- Installation ---
+Installation
+============
 
 Lonely Hangouts requires node.js.
 
 Once you have node, run:
 
-  npm install express socket.io commander xml2js
-  git clone https://github.com/danvk/lonely.git
+    npm install lonely
 
 
---- Usage ---
+Usage
+=====
 
 To use Lonely Hangouts, run:
 
-$ node lonely.js your_app.xml
+    node node_modules/lonely/lonely.js your_app.xml
 
 Then connect to http://localhost:8080 in your browser. You can open the URL in
 an incognito window or another browser to create a second user.
 
-For example, you can try running:
+For a quick demo, you can try cloning this repo and running:
 
-$ node lonely.js demos/basic.xml
+    node lonely.js demos/basic.xml
 
 If you change your XML file or any of the resources that it includes, you'll
 need to refresh the page in your browser. This will not erase the existing app
 state.
 
-
 For extra-speedy testing, Lonely has a single player mode:
 
-$ node lonely.js --single your_app.xml
+    node node_modules/lonely/lonely.js --single your_app.xml
 
 Now you can only create a single user, but there is no server-side state. This
 lets you iterate on your layout and design just like you would in a normal web
@@ -59,7 +59,8 @@ page.
 
 
 
---- Rewrites ---
+Rewrites
+========
 
 In a published Hangout App, resources must be hosted at a public https
 location. But for local development, it's much more convenient to use local
@@ -72,16 +73,16 @@ push the XML file to G+, the rewrites will be ignored.
 
 Here's what a rewrite looks like (see also demos/basic.xml):
 
-<!-- lonely
-{
-rewrites: [
-  {
-    from: "https://raw.github.com/danvk/lonely/master/",
-    to: ""
-  }
-]
-}
--->
+    <!-- lonely
+    {
+    rewrites: [
+      {
+        from: "https://raw.github.com/danvk/lonely/master/",
+        to: ""
+      }
+    ]
+    }
+    -->
 
 This is nothing more than a search/replace. It will change script sources,
 image sources and JavaScript sources, but also links and URLs in plain text.
@@ -89,12 +90,14 @@ image sources and JavaScript sources, but also links and URLs in plain text.
 Paths are relative to the directory from which you started the server.
 
 
---- Remaining work ---
+Remaining work
+==============
 
 There are _many_ methods of the G+ Hangouts API which are not currently
 implemented in Lonely Hangouts. For a complete API reference, see:
 https://developers.google.com/+/hangouts/api/
 
 Other useful features would include:
-o A "reset state" button
-o A facility for saving/restoring state
+
+  - A "reset state" button
+  - A facility for saving/restoring state
