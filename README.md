@@ -1,5 +1,4 @@
-Lonely Hangouts
----------------
+## Lonely Hangouts
 
 Local testing for the Google+ Hangouts API.
 Dan Vanderkam
@@ -21,8 +20,7 @@ portion of the Google+ Hangouts API. It does not require accounts and loads all
 resources from local disk.
 
 
-Installation
-============
+#### Installation
 
 Lonely Hangouts requires node.js.
 
@@ -31,8 +29,7 @@ Once you have node, run:
     npm install lonely
 
 
-Usage
-=====
+#### Usage
 
 To use Lonely Hangouts, run:
 
@@ -58,9 +55,7 @@ lets you iterate on your layout and design just like you would in a normal web
 page.
 
 
-
-Rewrites
-========
+#### Rewrites
 
 In a published Hangout App, resources must be hosted at a public https
 location. But for local development, it's much more convenient to use local
@@ -90,8 +85,7 @@ image sources and JavaScript sources, but also links and URLs in plain text.
 Paths are relative to the directory from which you started the server.
 
 
-Remaining work
-==============
+#### Remaining work
 
 There are _many_ methods of the G+ Hangouts API which are not currently
 implemented in Lonely Hangouts. For a complete API reference, see:
