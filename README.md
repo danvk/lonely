@@ -33,14 +33,14 @@ Once you have node, run:
 
 To use Lonely Hangouts, run:
 
-    node node_modules/lonely/lonely.js your_app.xml
+    ./node_modules/.bin/lonely your_app.xml
 
 Then connect to http://localhost:8080 in your browser. You can open the URL in
 an incognito window or another browser to create a second user.
 
 For a quick demo, you can try cloning this repo and running:
 
-    node lonely.js demos/basic.xml
+    ./lonely.js demos/basic.xml
 
 If you change your XML file or any of the resources that it includes, you'll
 need to refresh the page in your browser. This will not erase the existing app
@@ -48,7 +48,7 @@ state.
 
 For extra-speedy testing, Lonely has a single player mode:
 
-    node node_modules/lonely/lonely.js --single your_app.xml
+    ./node_modules/.bin/lonely.js --single your_app.xml
 
 Now you can only create a single user, but there is no server-side state. This
 lets you iterate on your layout and design just like you would in a normal web
