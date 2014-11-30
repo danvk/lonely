@@ -8,7 +8,7 @@
   },
   "bin": {
     "lonely": "lonely.js"
-  }
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/danvk/lonely.git"
