@@ -14,10 +14,12 @@ to an external server or two) leaves something to be desired.
 It's also difficult to test multiplayer scenarios because you need a separate
 Google+ account and a separate computer for each player.
 
-Lonely Hangouts solves both of these problems by letting you hang out all by
-yourself (hence the name!). It provides a node.js server which emulates a
-portion of the Google+ Hangouts API. It does not require accounts and loads all
-resources from local disk.
+While developing [Puzzle+](https://github.com/danvk/puzzleplus), this became
+frustrating enough that I developed Lonely Hangouts as a workaround. It solves
+both of these problems by letting you hang out all by yourself (hence the
+name!). It provides a node.js server which emulates a portion of the Google+
+Hangouts API. It does not require accounts and loads all resources from local
+disk.
 
 
 #### Installation
