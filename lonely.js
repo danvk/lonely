@@ -16,6 +16,7 @@
 
 // Still to do:
 // - Inline user PNGs
+'use strict';
 
 var EVENTS = {
   WELCOME: 'welcome',
@@ -33,10 +34,9 @@ var express = require('express'),
     assert  = require('assert'),
     fs      = require('fs'),
     path    = require('path'),
-    program = require('commander');
-
-var readXml = require('./lib/read-xml.js');
-var mime = require('mime');
+    program = require('commander'),
+    readXml = require('./lib/read-xml.js'),
+    mime = require('mime');
 
 program
   .version(0.1)
@@ -46,15 +46,12 @@ program
 assert.equal(1, program.args.length,
     'Usage: node ' + process.argv[1] + ' path/to/hangout.xml');
 
-xml_file = program.args[0];
-states_file = path.basename(xml_file) + '.states.json';
+var xml_file = program.args[0];
+var states_file = path.basename(xml_file) + '.states.json';
 
 var app = express();
 var httpServer = http.createServer(app);
 var io = io.listen(httpServer)
-
-// XXX is this needed?
-app.use(express.static(__dirname + '/..'));
 
 // Base XML file.
 app.get('/', function(req, res) {
