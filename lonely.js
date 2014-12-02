@@ -36,6 +36,7 @@ var express = require('express'),
     program = require('commander');
 
 var readXml = require('./lib/read-xml.js');
+var mime = require('mime');
 
 program
   .version(0.1)
@@ -52,6 +53,7 @@ var app = express();
 var httpServer = http.createServer(app);
 var io = io.listen(httpServer)
 
+// XXX is this needed?
 app.use(express.static(__dirname + '/..'));
 
 // Base XML file.
@@ -74,7 +76,7 @@ function addStaticJsFile(app, server_path, filename) {
     fs.readFile(filename, function(e, data) {
       assert.ifError(e);
       res.header('Cache-Control', 'no-cache');
-      res.contentType(filename);
+      res.contentType(mime.lookup(filename));
       res.send(data);
     });
   });
@@ -105,7 +107,7 @@ app.get(/(.*)/, function(req, res) {
      return;
     }
 
-    res.contentType(file_path);  // deduces mime type.
+    res.contentType(mime.lookup(file_path));
     res.header('Cache-Control', 'no-cache');
     res.send(data);
   });
