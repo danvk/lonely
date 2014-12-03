@@ -174,7 +174,10 @@ var gapi = (function() {
 })();
 
 if (typeof(GAPI_SERVER) == 'undefined') {
-  GAPI_SERVER = 'http://localhost:8080';
+  // This is typically localhost:8080, but might not be if you share the link
+  // with someone else on your intranet.
+  var loc = window.location;
+  GAPI_SERVER = loc.protocol + '//' + loc.host;
 }
 var socket = io.connect(GAPI_SERVER);
 
