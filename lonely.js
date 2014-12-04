@@ -35,8 +35,9 @@ var express = require('express'),
     fs      = require('fs'),
     path    = require('path'),
     program = require('commander'),
+    mime = require('mime'),
     readXml = require('./lib/read-xml.js'),
-    mime = require('mime');
+    users   = require('./lib/users.js');
 
 program
   .version(0.1)
@@ -112,45 +113,6 @@ app.get(/(.*)/, function(req, res) {
 
 
 // Fake hangouts API.
-var DEFAULT_PHOTO = 'https://lh5.googleusercontent.com/-_om-59NoFH8/AAAAAAAAAAI/AAAAAAAAAAA/0fcwDv4LZ-M/s48-c-k/photo.jpg';
-var num_users = 0;
-var users = [
-  { id: 1234, displayName: 'Dan Vanderkam', image: { url: DEFAULT_PHOTO } },
-  { id: 2345, displayName: 'Rocky Gulliver', image: { url: DEFAULT_PHOTO } },
-  { id: 3456, displayName: 'Raven Keller', image: { url: DEFAULT_PHOTO } },
-  { id: 4567, displayName: 'Kenny Leftin', image: { url: DEFAULT_PHOTO } },
-  { id: 5678, displayName: 'Jossie Ivanov', image: { url: DEFAULT_PHOTO } },
-  { id: 6789, displayName: 'Alastair Tse', image: { url: DEFAULT_PHOTO } }
-  // TODO(danvk): add more
-];
-
-// Returns a { id: id#, displayName: "User Name", ... } object
-// whose ID is not the same as any of existing_users.
-function makeUpUser(existing_users) {
-  var ids = {};
-  for (var i = 0; i < existing_users.length; i++) {
-    ids[existing_users[i].person.id] = true;
-  }
-
-  var user = null;
-  for (var i = 0; i < users.length; i++) {
-    if (ids[users[i].id]) continue;
-    user = users[i];
-    break;
-  }
-  assert.ok(user);
-
-  var displayIndex = num_users;
-  num_users++;
-  return {
-    id: 'x' + user.id,  // per-hangout id
-    displayIndex: displayIndex,
-    hasAppEnabled: true,
-    hasMicrophone: false,
-    hasCamera: false,
-    person: user
-  };
-}
 
 // This is the unified state object which is synchronized across clients.
 var global_state = { };
@@ -176,7 +138,7 @@ function writeSavedStates() {
 }
 
 io.sockets.on('connection', function(socket) {
-  var user = makeUpUser(current_users);
+  var user = users.makeUpUser(current_users);
   current_users.push(user);
 
   // Tell the user who they are and give them the lay of the land.
