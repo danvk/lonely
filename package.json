@@ -1,6 +1,6 @@
 {
   "name": "lonely",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Test Google+ Hangouts apps all by your lonesome",
   "main": "lonely.js",
   "scripts": {
